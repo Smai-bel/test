@@ -3,6 +3,9 @@ import streamlit as st
 import tensorflow as tf
 import requests
 from io import BytesIO
+import numpy as np
+import os
+from git import Repo
 
 # Function to preprocess the image
 def preprocess_image(image_path):
@@ -14,12 +17,15 @@ def preprocess_image(image_path):
     return img_array
 
 # Function to download the model from GitHub using Git LFS
-def download_model_from_github(model_url, model_filename):
-    response = requests.get(model_url)
-    model_content = BytesIO(response.content)
-    with open(model_filename, 'wb') as f:
-        f.write(model_content.getvalue())
+def download_model_from_github(repo_url, model_filename):
+    repo_dir = "temp_repo"
+
+    if not os.path.exists(repo_dir):
+        Repo.clone_from(repo_url, repo_dir)
+
+    model_path = os.path.join(repo_dir, model_filename)
     st.text("Model downloaded successfully.")
+    return model_path
 
 # Main Streamlit code
 st.title("Dog vs Cat Image Classifier")
@@ -39,12 +45,12 @@ if uploaded_file is not None:
         st.text("Image preprocessed successfully.")
 
         # Download the model from GitHub using Git LFS
-        model_url = 'https://raw.githubusercontent.com/Smai-bel/test/main/dog_cat_detector_model_Final_1%282%29.h5'
-        model_filename = 'dog_cat_detector_model_Final_2.h5'
-        download_model_from_github(model_url, model_filename)
+        model_url = 'https://github.com/Smai-bel/test.git'
+        model_filename = 'dog_cat_detector_model_Final_1(2).h5'
+        model_path = download_model_from_github(model_url, model_filename)
 
         # Load the pre-trained model and compile
-        model = tf.keras.models.load_model(model_filename)
+        model = tf.keras.models.load_model(model_path)
         st.text("Model loaded successfully.")
 
         # Make predictions using the loaded model
