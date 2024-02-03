@@ -19,6 +19,7 @@ def download_model_from_github(model_url, model_filename):
     model_content = BytesIO(response.content)
     with open(model_filename, 'wb') as f:
         f.write(model_content.getvalue())
+    st.text("Model downloaded successfully.")
 
 # Main Streamlit code
 st.title("Dog vs Cat Image Classifier")
@@ -31,9 +32,11 @@ if uploaded_file is not None:
         # Display the uploaded image
         pil_image = PilImage.open(uploaded_file)
         st.image(pil_image, caption="Uploaded Image", use_column_width=True)
+        st.text("Image displayed successfully.")
 
         # Preprocess the resized image for the model
         img_array = preprocess_image(uploaded_file)
+        st.text("Image preprocessed successfully.")
 
         # Download the model from GitHub using Git LFS
         model_url = 'https://raw.githubusercontent.com/Smai-bel/test/main/dog_cat_detector_model_Final_1%282%29.h5'
@@ -42,9 +45,11 @@ if uploaded_file is not None:
 
         # Load the pre-trained model and compile
         model = tf.keras.models.load_model(model_filename)
-        
+        st.text("Model loaded successfully.")
+
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
+        st.text("Predictions made successfully.")
 
         # Print raw predictions
         st.write("Raw Predictions:", predictions[0].tolist())
