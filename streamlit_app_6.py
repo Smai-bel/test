@@ -4,28 +4,7 @@ import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import requests
-from io import BytesIO
 from PIL import Image
-
-# Function to download the model from GitHub using Git LFS API
-def download_model_from_github_lfs(github_url, access_token):
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-        "Accept": "application/vnd.github.v3+json",
-    }
-
-    response = requests.get(github_url, headers=headers)
-    model_bytes = BytesIO(response.content)
-    return model_bytes
-
-# GitHub LFS URL for the model
-github_model_url = "https://raw.githubusercontent.com/Smai-bel/test/main/dog_cat_detector_model_Final_1(2).h5"
-
-# Replace YOUR_GITHUB_TOKEN with your actual GitHub access token
-access_token = "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"
-
-# Download the model from GitHub using Git LFS API
-model_bytes = download_model_from_github_lfs(github_model_url, access_token)
 
 # Function to preprocess the image
 def preprocess_image(image_path):
@@ -52,10 +31,10 @@ if uploaded_file is not None:
         img_array = preprocess_image(uploaded_file)
 
         # Load the model from BytesIO
-        loaded_model = load_model(model_bytes)
+        model = tf.keras.models.load_model('dog_cat_detector_model_Final_1(2).h5')
 
         # Make predictions using the loaded model
-        predictions = loaded_model.predict(img_array)
+        predictions = model.predict(img_array)
 
         # Print raw predictions
         st.write("Raw Predictions:", predictions[0].tolist())
