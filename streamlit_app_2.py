@@ -15,7 +15,7 @@ def download_model_from_github(github_url):
     return model_bytes
 
 # Download the model from GitHub
-github_model_url = "https://github.com/Smai-bel/test/main/dog_cat_detector_model_Final_1(2).h5"  # Replace with the actual URL
+github_model_url = "https://raw.githubusercontent.com/Smai-bel/test/main/dog_cat_detector_model_Final_1(2).h5
 model_bytes = download_model_from_github(github_model_url)
 
 
