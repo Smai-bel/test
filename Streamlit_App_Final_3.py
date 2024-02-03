@@ -3,12 +3,6 @@ import streamlit as st
 import tensorflow as tf
 import requests
 from io import BytesIO
-import subprocess
-import os
-
-# Workaround to download the model with curl
-if not os.path.isfile('model.h5'):
-    subprocess.run(['curl --output model.h5 "https://media.githubusercontent.com/Smai-bel/test/main/dog_cat_detector_model_Final_1(2).h5"'], shell=True)
 
 # Function to preprocess the image
 def preprocess_image(image_path):
@@ -18,6 +12,13 @@ def preprocess_image(image_path):
     img_array = tf.expand_dims(img_array, 0)  # Create batch axis
     img_array /= 255.0  # Normalize pixel values to [0, 1]
     return img_array
+
+# Function to download the model from GitHub using Git LFS
+def download_model_from_github(model_url, model_filename):
+    response = requests.get(model_url)
+    model_content = BytesIO(response.content)
+    with open(model_filename, 'wb') as f:
+        f.write(model_content.getvalue())
 
 # Main Streamlit code
 st.title("Dog vs Cat Image Classifier")
@@ -34,10 +35,14 @@ if uploaded_file is not None:
         # Preprocess the resized image for the model
         img_array = preprocess_image(uploaded_file)
 
-        # Load the pre-trained model
-        model_filename = 'model.h5'
-        model = tf.keras.models.load_model(model_filename, compile=False)
+        # Download the model from GitHub using Git LFS
+        model_url = 'https://raw.githubusercontent.com/Smai-bel/test/main/dog_cat_detector_model_Final_1%282%29.h5'
+        model_filename = 'dog_cat_detector_model_Final_2.h5'
+        download_model_from_github(model_url, model_filename)
 
+        # Load the pre-trained model and compile
+        model = tf.keras.models.load_model(model_filename)
+        
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
 
