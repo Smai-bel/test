@@ -27,7 +27,7 @@ if uploaded_file is not None:
         img_array = preprocess_image(uploaded_file)
 
         # Load the pre-trained model only if an image is uploaded
-        model = tf.keras.models.load_model('dog_cat_detector_model_Final_2.h5')
+        model = tf.keras.models.load_model('dog_cat_detector_model_Final_1(2).h5')
 
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
