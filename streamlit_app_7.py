@@ -36,7 +36,7 @@ if uploaded_file is not None:
         # Preprocess the resized image for the model
         img_array = preprocess_image(uploaded_file)
 
-        # Load the model from BytesIO
+        # Load the model from BytesIO directly
         model = tf.keras.models.load_model(model_bytes)
 
         # Make predictions using the loaded model
