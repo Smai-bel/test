@@ -49,9 +49,6 @@ if uploaded_file is not None:
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
 
-        # Print raw predictions
-        st.write("Raw Predictions:", predictions[0].tolist())
-
         # Manually interpret predictions based on your model's output with a threshold
         threshold = 0.5
         predicted_class = 'Dog' if predictions[0][0] >= threshold else 'Cat'
