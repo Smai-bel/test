@@ -57,6 +57,9 @@ if uploaded_file is not None:
         # Display the result
         st.subheader("Prediction:")
         st.write(f"Predicted class: {predicted_class}")
+
+        if predicted_class == 'Cat':
+            confidence = 1.0 - confidence  # Invert confidence for cats
         st.write(f"Confidence: {float(confidence):.2%}")
 
     except Image.UnidentifiedImageError as e:
