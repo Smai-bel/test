@@ -16,7 +16,7 @@ def preprocess_image(image_path):
     return img_array
 
 # Replace this with your actual Google Drive direct download link
-model_link = "https://drive.google.com/uc?export=download&id=1ePLbLPenJ0khxsQhyALsKfDTyCU8bjrf"
+model_link = "https://drive.google.com/uc?export=download&id=1De5z4MidNSHacVJuCGhJB9OkowiYMNLf"
 
 # Download the model from the provided link
 response = requests.get(model_link)
