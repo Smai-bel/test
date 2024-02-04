@@ -56,11 +56,11 @@ if uploaded_file is not None:
 
         # Display the result
         st.subheader("Prediction:")
-        st.write(f"Predicted class: {predicted_class}")
+        st.write(f"this picture corespond to a : {predicted_class}")
 
         if predicted_class == 'Cat':
             confidence = 1.0 - confidence  # Invert confidence for cats
-        st.write(f"Confidence: {float(confidence):.2%}")
+        st.write(f"we are Confident at: {float(confidence):.2%}")
 
     except Image.UnidentifiedImageError as e:
         st.error(f"Error: Unable to identify the image file. Please upload a valid image.")
