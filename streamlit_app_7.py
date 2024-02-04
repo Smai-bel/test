@@ -4,6 +4,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import requests
 from io import BytesIO
+import tempfile
 
 # Function to preprocess the image
 def preprocess_image(image_path):
@@ -21,6 +22,12 @@ model_link = "https://drive.google.com/uc?export=download&id=1ePLbLPenJ0khxsQhyA
 response = requests.get(model_link)
 model_bytes = BytesIO(response.content)
 
+# Save BytesIO content to a temporary file
+temp_file = tempfile.NamedTemporaryFile(delete=False)
+temp_file.write(model_bytes.getvalue())
+temp_file_path = temp_file.name
+temp_file.close()
+
 # Main Streamlit code
 st.title("Dog vs Cat Image Classifier")
 
@@ -36,8 +43,8 @@ if uploaded_file is not None:
         # Preprocess the resized image for the model
         img_array = preprocess_image(uploaded_file)
 
-        # Load the model from BytesIO directly
-        model = tf.keras.models.load_model(model_bytes)
+        # Load the model from the temporary file
+        model = tf.keras.models.load_model(temp_file_path)
 
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
@@ -59,3 +66,7 @@ if uploaded_file is not None:
         st.error(f"Error: Unable to identify the image file. Please upload a valid image.")
     except Exception as e:
         st.error(f"Error processing the image: {e}")
+
+# Remove the temporary file after using it
+import os
+os.remove(temp_file_path)
